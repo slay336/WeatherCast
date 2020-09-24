@@ -13,12 +13,12 @@ class WeatherRetriever:
 
     @staticmethod
     def get_available_cities():
-        with open("../cities.json", "r") as f:
+        with open("cities.json", "r") as f:
             data = json.loads(f.read())
         cities = []
         for datum in data:
             cities.append(datum["name"])
-        print(cities)
+        return cities
 
 
 # if __name__ == "__main__":
