@@ -3,5 +3,6 @@
 {% block title %}Погода в городе:{{ city }}{% endblock %}
 {% block content %}
 <h1>Город: {{ city }}</h1>
-<h2>Температура: {{ city_temp }}</h2>
+<h2 id="temper">{{ city_temp }}</h2>
+<script src="static/coloring_temperature.js"></script>
 {% endblock %}
