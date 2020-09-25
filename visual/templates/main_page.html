@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<h1>Текущая погода:</h1>
+<table border="1">
+    <th>Город</th>
+    {% for city in city_list %}
+        <tr><td><a href="/get_weather?city={{ city }}">{{ city }}</a></td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
