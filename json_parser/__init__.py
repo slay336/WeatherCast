@@ -4,11 +4,11 @@ import os
 
 
 class WeatherRetriever:
-    def __init__(self, url: str):
+    def __init__(self, url: str = "http://api.openweathermap.org/data/2.5/weather"):
         self.url = url
 
     def get_weather(self, city: str) -> str:
-        response = requests.get(f"{self.url}?q={city}&appid={os.environ.get('WEATHER_KEY')}").json()
+        response = requests.get(f"{self.url}?q={city}&appid={os.environ.get('WEATHER_KEY')}&units=metric").json()
         return response["main"]["temp"]
 
     @staticmethod
