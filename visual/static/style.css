@@ -1,3 +1,10 @@
 h1 {
     color: blue;
 }
+@font-face {
+    font-family: Lobster;
+    src: url(Lobster-Regular.ttf);
+}
+th, td, a, h1, h2 {
+    font-family: Lobster;
+}

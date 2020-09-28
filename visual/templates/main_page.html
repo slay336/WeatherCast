@@ -3,11 +3,31 @@
 {% block title %}Главная страница{% endblock %}
 
 {% block content %}
-<h1>Текущая погода:</h1>
-<table border="1">
-    <th>Город</th>
-    {% for city in city_list %}
-        <tr><td><a href="/get_weather?city={{ city }}">{{ city }}</a></td></tr>
-    {% endfor %}
-</table>
+<div class="container"></div>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <h1 style="text-align: center;">Текущая погода:</h1>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <table class="table" style="border: 1px solid gray; text-align: center;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Город</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for city in city_list %}
+                    <tr><td><a href="/get_weather?city={{ city }}">{{ city }}</a></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 {% endblock %}
