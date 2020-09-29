@@ -4,17 +4,22 @@
 
 {% block content %}
 <div class="container"></div>
-    <div class="row">
-        <div class="col-4"></div>
+    <div class="row justify-content-center">
         <div class="col-4">
-            <h1 style="text-align: center;">Текущая погода:</h1>
+            <h1 style="text-align: center;">Current weather:</h1>
         </div>
-        <div class="col-4"></div>
     </div>
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
-            <table class="table" style="border: 1px solid gray; text-align: center;">
+    <div class="row justify-content-center">
+        <div class="col-2">
+            <button class="btn btn-secondary dropdown-toggle align-self-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose city</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for city in city_list %}
+                    <div class="dropdown-item" onclick="sendReq('{{ city }}');" id="{{ city }}">{{ city }}</div>
+                {% endfor %}
+            </div>
+
+        <!-- Вывод погоды таблицей
+          <table class="table" style="border: 1px solid gray; text-align: center;">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Город</th>
@@ -25,9 +30,9 @@
                     <tr><td><a href="/get_weather?city={{ city }}">{{ city }}</a></td></tr>
                 {% endfor %}
                 </tbody>
-            </table>
+            </table> -->
+
         </div>
-        <div class="col-2"></div>
     </div>
 </div>
 {% endblock %}

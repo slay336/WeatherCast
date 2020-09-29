@@ -8,8 +8,8 @@ def hello_world():
     return render_template('main_page.html', city_list=city_list)
 
 
-@app.route('/get_weather')
-def get_weather():
+@app.route('/get_weather',methods=['POST',])
+def get_city_weather():
     wr_obj = wr()
     city = request.args.get('city')
     city_temp: str = wr_obj.get_weather(city)

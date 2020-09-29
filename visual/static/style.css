@@ -1,10 +1,10 @@
 h1 {
-    color: blue;
+    color: moccasin;
 }
 @font-face {
-    font-family: Lobster;
-    src: url(Lobster-Regular.ttf);
+    font-family: Helvetica;
+    src: url(HelveticaRegular.ttf);
 }
 th, td, a, h1, h2 {
-    font-family: Lobster;
+    font-family: Helvetica;
 }
