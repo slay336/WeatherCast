@@ -5,16 +5,16 @@
 {% block content %}
 <div class="container"></div>
     <div class="row justify-content-center">
-        <div class="col-4">
+        <div class="col-3">
             <h1 style="text-align: center;">Current weather:</h1>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-2">
+    <div class="row justify-content-center dropmenu1">
+        <div class="col-1">
             <button class="btn btn-secondary dropdown-toggle align-self-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose city</button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% for city in city_list %}
-                    <div class="dropdown-item" onclick="sendReq('{{ city }}');" id="{{ city }}">{{ city }}</div>
+                    <div class="dropdown-item" onclick="getWe('{{ city }}')" id="{{ city }}">{{ city }}</div>
                 {% endfor %}
             </div>
 

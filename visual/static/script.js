@@ -9,13 +9,23 @@
 //    temperature.style.color = 'tomato';
 //}
 
-function sendReq (city) {
+function getWe (city) {
     $.ajax({
-        url:'/get_weather',
-        type: 'POST',
+        url: '/get_weather',
+        method: 'POST',
         data: city,
-        success: function(data, textStatus, jqXHR) {
-            alert('Good');
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            console.log('good')
+            $("#weatherForDelete").remove();
+            $('<div>', {
+            'class': 'row justify-content-center',
+            'id': 'weatherForDelete',
+            text: data[city]
+            }).appendTo(document.body);
+//            var div1 = document.createElement('div')
+//            div1.innerHTML = data[city]
+//            document.body.append(div1)
         }
-    });
+    })
 }
