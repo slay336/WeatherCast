@@ -14,6 +14,6 @@ def hello_world():
 def get_city_weather():
     wr_obj = wr()
     city = list(request.form.keys())[0]
-    city_temp: str = wr_obj.get_weather(city)
-    temp_dict = {city: city_temp}
-    return json.dumps(temp_dict)
+    city_temp: dict = wr_obj.get_weather(city)
+    city_temp["link"] = f'http://openweathermap.org/img/wn/{city_temp["icon"]}@2x.png'
+    return json.dumps(city_temp)
