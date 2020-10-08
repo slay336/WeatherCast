@@ -17,12 +17,17 @@ function getWe (city) {
         dataType: "json",
         success: function (data, textStatus, jqXHR) {
             console.log('good')
-            $("#weatherForDelete").remove();
+            $("#temporary").remove();
             $('<div>', {
             'class': 'row justify-content-center',
-            'id': 'weatherForDelete',
-            text: data[city]
+            'id': 'temporary'
             }).appendTo(document.body);
+            $('<label>', {
+            text: data["temperature"]
+            }).appendTo("#temporary");
+            $('<img>', {
+            'src': data["link"]
+            }).appendTo("#temporary");
 //            var div1 = document.createElement('div')
 //            div1.innerHTML = data[city]
 //            document.body.append(div1)
