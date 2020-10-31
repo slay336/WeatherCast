@@ -17,10 +17,9 @@ body {
 }
 
 .current-weather {
-    margin: 60px 8% 0px;
+    margin: 60px 9.5% 0px;
     height: 380px;
-    width: 100%;
-    max-width: 1200px;
+    width: 80vw;
     background-color: #325661;
     display: inline-block;
 }
@@ -30,6 +29,14 @@ body {
     height: 220px;
     display: flex;
     justify-content: space-between;
+}
+
+#city-name-value {
+    background-color: #325661;
+    border: 2px solid white;
+    color: white;
+    border-radius: 5px;
+    font-family: 'Cousine', monospace;
 }
 
 .weather-text-data {
