@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Cousine&display=swap');
+
+body {
+    height: 100vh;
+    background: linear-gradient(to top right, #597078 , #aec3d0) no-repeat;
+    background-size: 100%;
+}
+
+.source {
+    color: #fff;
+    font-family: 'Cousine', monospace;
+    text-align: right;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.current-weather {
+    margin: 60px 8% 0px;
+    height: 380px;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #325661;
+    display: inline-block;
+}
+
+.current-weather-data {
+    margin: 80px 80px 80px;
+    height: 220px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.weather-text-data {
+    color: #fff;
+    font-family: 'Cousine', monospace;
+    margin-left: 100px;
+}
+
+.date-info {
+    text-transform: uppercase;
+    font-size: 36px;
+    margin-bottom: 26px;
+    font-weight: 700;
+}
+
+.condition-data {
+    font-size: 24px;
+}
+
+.temp-info {
+    font-weight: 700;
+}
+
+.weather-image {
+    margin: 30px 150px 30px;
+}
+
+.weather-forecast-table {
+    border: 3px solid #99b2ba;
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Cousine', monospace;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 20px;
+}
+
+.weather-forecast-item {
+    border: 3px solid #99b2ba;
+    height: 116px;
+    width: 294px;
+}
+
+.forecast-text {
+    display: inline-block;
+    height: 100%;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.item-container {
+    display: flex;
+    justify-content: space-between;
+    height: 65px;
+}
+
+.forecast-image {
+    margin-right: 40px;
+    margin-top: -10px;
+}
+

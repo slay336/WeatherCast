@@ -4,9 +4,10 @@ import json
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def hello_world():
-    city_list = wr.get_available_cities()
+    city_list = ['hi', 'hello']
     return render_template('main_page.html', city_list=city_list)
 
 

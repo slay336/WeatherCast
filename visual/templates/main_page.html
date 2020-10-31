@@ -1,38 +1,107 @@
 {% extends "base.html" %}
 
-{% block title %}Главная страница{% endblock %}
+{% block title %}Погода{% endblock %}
 
 {% block content %}
-<div class="container"></div>
-    <div class="row justify-content-center">
-        <div class="col-3">
-            <h1 style="text-align: center;">Current weather:</h1>
-        </div>
+    <div class="source">
+        designed by
+        <a href="https://ru.freepik.com/vectors/template">
+            freepik
+        </a>
     </div>
-    <div class="row justify-content-center dropmenu1">
-        <div class="col-1">
-            <button class="btn btn-secondary dropdown-toggle align-self-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose city</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {% for city in city_list %}
-                    <div class="dropdown-item" onclick="getWe('{{ city }}')" id="{{ city }}">{{ city }}</div>
-                {% endfor %}
+    <div class="current-weather">
+        <div class="current-weather-data">
+            <div class="weather-text-data">
+                <div class="date-info">
+                    Monday, may 23
+                </div>
+                <div class="condition-data">
+                    <div class="temp-info">
+                        27&#176;C / 81F
+                    </div>
+                    <div class="time-info">
+                        14:35
+                    </div>
+                    <div class="real-feel">
+                        Real Feel 25&#176;C / 76F
+                    </div>
+                    <div class="humidity">
+                        Humidity 61%
+                    </div>
+                </div>
             </div>
-
-        <!-- Вывод погоды таблицей
-          <table class="table" style="border: 1px solid gray; text-align: center;">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Город</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for city in city_list %}
-                    <tr><td><a href="/get_weather?city={{ city }}">{{ city }}</a></td></tr>
-                {% endfor %}
-                </tbody>
-            </table> -->
-
+            <div class="weather-image">
+                <img src="static/img/10d.png">
+            </div>
+        </div>
+        <div class="weather-forecast">
+            <table class="weather-forecast-table">
+                <tr class="weather-forecast-row">
+                    <td class="weather-forecast-item">
+                        <div class="item-container">
+                            <div class="forecast-text">
+                                Tue<br>26&#176;C
+                            </div>
+                            <div class="forecast-image">
+                                <img src="static/img/01d.png">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="weather-forecast-item">
+                        <div class="item-container">
+                            <div class="forecast-text">
+                                Tue<br>26&#176;C
+                            </div>
+                            <div class="forecast-image">
+                                <img src="static/img/13d.png" width="80" height="65">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="weather-forecast-item">
+                        <div class="item-container">
+                            <div class="forecast-text">
+                                Tue<br>26&#176;C
+                            </div>
+                            <div class="forecast-image">
+                                <img src="static/img/10d.png" width="80" height="65">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="weather-forecast-row">
+                    <td class="weather-forecast-item">
+                        <div class="item-container">
+                            <div class="forecast-text">
+                                Tue<br>26&#176;C
+                            </div>
+                            <div class="forecast-image">
+                                <img src="static/img/10d.png" width="80" height="65">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="weather-forecast-item">
+                        <div class="item-container">
+                            <div class="forecast-text">
+                                Tue<br>26&#176;C
+                            </div>
+                            <div class="forecast-image">
+                                <img src="static/img/10d.png" width="80" height="65">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="weather-forecast-item">
+                        <div class="item-container">
+                            <div class="forecast-text">
+                                Tue<br>26&#176;C
+                            </div>
+                            <div class="forecast-image">
+                                <img src="static/img/10d.png" width="80" height="65">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
-</div>
+
 {% endblock %}
