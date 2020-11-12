@@ -1,7 +1,7 @@
 Vue.component('currentimage', {
     props: ['imagename'],
     template: '<img :src="\'static/img/\' + imagename + \'.png\'">'
-})
+});
 
 var app = new Vue({
     el: '#page',
@@ -11,6 +11,42 @@ var app = new Vue({
         currentTime: '14:35',
         realFeel: 'Real Feel 25 C / 76F',
         humidity: 'Humidity 61%',
-        currentImage: '01d'
+        currentImage: '01d',
+        forecasts: [
+            {
+                dayOfWeek: "thu",
+                temperature: "26 C",
+                icon: '01d'
+            },
+            {
+                dayOfWeek: "thu",
+                temperature: "26 C",
+                icon: '01d'
+            },
+            {
+                dayOfWeek: "thu",
+                temperature: "26 C",
+                icon: '01d'
+            },
+            {
+                dayOfWeek: "thu",
+                temperature: "26 C",
+                icon: '01d'
+            },
+            {
+                dayOfWeek: "thu",
+                temperature: "26 C",
+                icon: '01d'
+            },
+            {
+                dayOfWeek: "thu",
+                temperature: "26 C",
+                icon: '01d'
+            }
+        ],
+        searchResults: [
+            'Превед',
+            'Медвед'
+        ]
     }
-})
+});

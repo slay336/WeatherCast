@@ -8,6 +8,11 @@
             <div class="container">
                 <div class="citySearch">
                     <input type="text">
+                    <div class="searchOptions">
+                        <div class="searchOption" v-for="result in searchResults">
+                            {{ result }}
+                        </div>
+                    </div>
                 </div>
                 <div class="currentWeather">
                     <div class="currentWeatherFlex">
@@ -34,7 +39,16 @@
                             <currentimage :imagename="currentImage"></currentimage>
                         </div>
                     </div>
-
+                </div>
+                <div class="weatherForecast">
+                    <div class="forecastItem" v-for="forecast in forecasts">
+                        <div class="forecastText">
+                            {{ forecast.dayOfWeek }}<br>{{ forecast.temperature }}
+                        </div>
+                        <div class="forecastImage">
+                            <currentimage :imagename="forecast.icon"></currentimage>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
