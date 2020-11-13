@@ -44,9 +44,31 @@ var app = new Vue({
                 icon: '01d'
             }
         ],
-        searchResults: [
-            'Превед',
-            'Медвед'
-        ]
+        searchResults: {
+            results: [],
+            show: false
+        },
+        searchText: ""
+    },
+    methods: {
+        sendSearchRequest: function() {
+            if (this.searchText != "") {
+                axios
+                    .get('/search_city?query=' + this.searchText)
+                    .then(function(response){
+                        app.searchResults.results = response.data.results.slice(0, 5);
+                    });
+                this.searchResults.show = true;
+            } else {
+                this.searchResults = {
+                    results: [],
+                    show: false
+                }
+            }
+        },
+        chooseSearchResult: function(event) {
+            this.searchText = event.target.innerHTML.trim();
+            this.searchResults.show = false;
+        }
     }
 });

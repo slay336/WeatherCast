@@ -7,9 +7,10 @@
         <div id="page">
             <div class="container">
                 <div class="citySearch">
-                    <input type="text">
-                    <div class="searchOptions">
-                        <div class="searchOption" v-for="result in searchResults">
+                    <input type="text" @input="sendSearchRequest" v-model="searchText">
+                    <div class="searchOptions" v-if="searchResults.show">
+                        <div class="searchOption" v-for="result in searchResults.results"
+                             @click="chooseSearchResult">
                             {{ result }}
                         </div>
                     </div>
@@ -53,5 +54,4 @@
             </div>
         </div>
     {% endraw %}
-
 {% endblock %}

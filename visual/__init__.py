@@ -18,3 +18,11 @@ def get_city_weather():
     city_temp: dict = wr_obj.get_weather(city)
     city_temp["link"] = f'http://openweathermap.org/img/wn/{city_temp["icon"]}@2x.png'
     return json.dumps(city_temp)
+
+
+@app.route('/search_city')
+def search_city():
+    result = {
+        'results': ['Первый', 'Второй', 'Третий', 'Четвертый', 'Пятый']
+    }
+    return json.dumps(result)
