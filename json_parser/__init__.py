@@ -17,7 +17,7 @@ class WeatherRetriever:
 
     @staticmethod
     def get_available_cities():
-        with open("cities.json", "r") as f:
+        with open("cities_info.json", "r") as f:
             data = json.loads(f.read())
         cities = []
         for datum in data:

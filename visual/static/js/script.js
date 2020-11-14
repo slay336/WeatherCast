@@ -56,7 +56,7 @@ var app = new Vue({
                 axios
                     .get('/search_city?query=' + this.searchText)
                     .then(function(response){
-                        app.searchResults.results = response.data.results.slice(0, 5);
+                        app.searchResults.results = response.data.result.slice(0, 5);
                     });
                 this.searchResults.show = true;
             } else {
