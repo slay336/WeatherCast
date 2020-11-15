@@ -1,3 +1,12 @@
+
+function getCookie(name) {
+  // заимствовано из https://learn.javascript.ru/cookie
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 Vue.component('currentimage', {
     props: ['imagename'],
     template: '<img :src="\'static/img/\' + imagename + \'.png\'">'
@@ -6,7 +15,7 @@ Vue.component('currentimage', {
 var app = new Vue({
     el: '#page',
     data: {
-        currentDate: 'Monday, may 23',
+        currentDate: '',
         currentTemperature: '27 C / 81F',
         currentTime: '14:35',
         realFeel: 'Real Feel 25 C / 76F',
@@ -69,6 +78,22 @@ var app = new Vue({
         chooseSearchResult: function(event) {
             this.searchText = event.target.innerHTML.trim();
             this.searchResults.show = false;
+            document.cookie = "currentCity=" + this.searchText;
+        },
+        requestWeather: function() {
+            axios
+                .get('/get_weather')
+                .then(function(response) {
+                    app.currentDate = response.data.currentDate;
+                })
         }
     }
 });
+
+window.onload = function() {
+    currentCity = getCookie("currentCity");
+    if (currentCity != undefined) {
+        app.searchText = currentCity;
+        app.requestWeather();
+    }
+};

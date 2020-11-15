@@ -9,10 +9,7 @@
                 <div class="citySearch">
                     <input type="text" @input="sendSearchRequest" v-model="searchText">
                     <div class="searchOptions" v-if="searchResults.show">
-                        <div class="searchOption" v-for="result in searchResults.results"
-                             @click="chooseSearchResult">
-                            {{ result }}
-                        </div>
+                        <a class="searchOption" v-for="result in searchResults.results" @click="chooseSearchResult" href="#">{{ result }}</a>
                     </div>
                 </div>
                 <div class="currentWeather">
