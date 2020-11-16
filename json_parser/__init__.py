@@ -8,12 +8,22 @@ class WeatherRetriever:
         self.url = url
 
     def get_weather(self, city: str) -> dict:
-        response = requests.get(f"{self.url}?q={city}&appid={os.environ.get('WEATHER_KEY')}&units=metric").json()
-        temp_icon = {
-            "temperature": response["main"]["temp"],
-            "icon": response["weather"][0]["icon"]
+        key = os.environ.get('WEATHER_KEY')
+        response = requests.get(f"{self.url}?q={city}&appid={key}&units=metric").json()
+        """ требуемые поля:
+            timezone (сдвиг в секундах от utc)
+            main.temp 
+            main.feels_like
+            main.humidity
+            weather.icon
+        """
+        result = {
+            "timezone": response["timezone"] / 3600,
+            "current_temperature": response["main"]["temp"],
+            "feels_like": response["main"]["feels_like"],
+            "humidity": response["main"]["humidity"]
         }
-        return temp_icon
+        return result
 
     @staticmethod
     def get_available_cities():

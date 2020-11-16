@@ -43,7 +43,7 @@ def search_city():
 
 
 def get_current_date():
-    current_date = datetime.datetime.now()
+    current_date = datetime.datetime.utcnow()
     result = current_date.strftime('%A, %b %d')
     return result
 
