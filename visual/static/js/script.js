@@ -15,11 +15,11 @@ Vue.component('currentimage', {
 var app = new Vue({
     el: '#page',
     data: {
-        currentDate: '',
-        currentTemperature: '27 C / 81F',
-        currentTime: '14:35',
-        realFeel: 'Real Feel 25 C / 76F',
-        humidity: 'Humidity 61%',
+        currentDate: 'no data yet',
+        currentTemperature: '',
+        currentTime: '',
+        realFeel: '',
+        humidity: '',
         currentImage: '01d',
         forecasts: [
             {
@@ -79,12 +79,16 @@ var app = new Vue({
             this.searchText = event.target.innerHTML.trim();
             this.searchResults.show = false;
             document.cookie = "currentCity=" + this.searchText;
+            this.requestWeather();
         },
         requestWeather: function() {
             axios
                 .get('/get_weather')
                 .then(function(response) {
-                    app.currentDate = response.data.currentDate;
+                    console.log(response.data);
+                    for (var key in response.data) {
+                        app[key] = response.data[key];
+                    }
                 })
         }
     }

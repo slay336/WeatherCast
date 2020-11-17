@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-# from json_parser import WeatherRetriever as wr
+from json_parser import WeatherRetriever as wr, Metrics
 import json
 import datetime
 
@@ -17,14 +17,14 @@ def index():
 
 @app.route('/get_weather')
 def get_city_weather():
-    # wr_obj = wr()
-    # city = list(request.form.keys())[0]
-    # city_temp: dict = wr_obj.get_weather(city)
-    # city_temp["link"] = f'http://openweathermap.org/img/wn/{city_temp["icon"]}@2x.png'
-
-    result = {
-        "currentDate": get_current_date()
-    }
+    wr_obj = wr()
+    requested_city = request.cookies.get("currentCity", "")
+    if requested_city:
+        result = wr_obj.get_weather(requested_city, Metrics.METRIC)
+    else:
+        result = {
+            "error": "Incorrect city"
+        }
     return json.dumps(result)
 
 
@@ -40,11 +40,5 @@ def search_city():
         "result": results
     }
     return json.dumps(result)
-
-
-def get_current_date():
-    current_date = datetime.datetime.utcnow()
-    result = current_date.strftime('%A, %b %d')
-    return result
 
 

@@ -1,7 +1,7 @@
 import requests
-import json
 import os
 from enum import Enum
+import datetime as dt
 
 
 class Metrics(Enum):
@@ -15,34 +15,21 @@ class WeatherRetriever:
 
     def get_weather(self, city: str, metrics: Metrics) -> dict:
         key = os.environ.get('WEATHER_KEY')
-        response = requests.get(f"{self.url}?q={city}&appid={key}&{metrics}").json()
-        """ требуемые поля:
-            timezone (сдвиг в секундах от utc)
-            main.temp 
-            main.feels_like
-            main.humidity
-            weather.icon
-        """
+        target_url = f"{self.url}?q={city}&appid={key}&{metrics.value}"
+        response = requests.get(target_url).json()
+        if response.get('cod', 400) != 200:
+            raise ValueError("The requested data was not received")
+        current_date_utc = dt.datetime.utcnow()
+        current_date = current_date_utc + dt.timedelta(seconds=response["timezone"])
+
+        icon = response["weather"][0]["icon"].replace('n', 'd')
+
         result = {
-            "timezone": response["timezone"] / 3600,
-            "current_temperature": int(round(response["main"]["temp"], 0)),
-            "feels_like": int(round(response["main"]["feels_like"])),
-            "humidity": response["main"]["humidity"],
-            "icon": response["weather"][0]["icon"]
+            "currentDate": dt.datetime.strftime(current_date, "%A, %b %d"),
+            "currentTime": dt.datetime.strftime(current_date, "%H:%M"),
+            "currentTemperature": f'{int(round(response["main"]["temp"], 0))}\xb0C',
+            "realFeel": f'Real Feel {int(round(response["main"]["feels_like"]))}\xb0C',
+            "humidity": f'Humidity {response["main"]["humidity"]}%',
+            "currentImage": icon
         }
         return result
-
-    @staticmethod
-    def get_available_cities():
-        with open("cities_info.json", "r") as f:
-            data = json.loads(f.read())
-        cities = []
-        for datum in data:
-            cities.append(datum["name"])
-        return cities
-
-
-# if __name__ == "__main__":
-#     weather = WeatherRetriever("http://api.openweathermap.org/data/2.5/weather")
-#     print(weather.get_weather("Taglag"))
-#     # WeatherRetriever.get_available_cities()
