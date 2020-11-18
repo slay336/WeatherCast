@@ -62,12 +62,24 @@ var app = new Vue({
     methods: {
         sendSearchRequest: function() {
             if (this.searchText != "") {
-                axios
-                    .get('/search_city?query=' + this.searchText)
-                    .then(function(response){
-                        app.searchResults.results = response.data.result.slice(0, 5);
-                    });
-                this.searchResults.show = true;
+                let lastSearchText = this.searchText;
+                let promise = new Promise(function(resolve, reject){
+                    // ждем полсекунды, потом запрашиваем подходящие города
+                    setTimeout(() => resolve('done'), 500);
+                });
+                promise.then(function(result){
+                    // запрашиваем подходящие города только если по истечение секунды текст поискового запроса не
+                    // изменился
+                    if (lastSearchText === app.searchText) {
+                        axios
+                            .get('/search_city?query=' + app.searchText)
+                            .then(function(response){
+                                app.searchResults.results = response.data.result.slice(0, 5);
+                                app.searchResults.show = true;
+                            });
+                    }
+                },
+                () => console.log("shit"));
             } else {
                 this.searchResults = {
                     results: [],
@@ -85,11 +97,10 @@ var app = new Vue({
             axios
                 .get('/get_weather')
                 .then(function(response) {
-                    console.log(response.data);
                     for (var key in response.data) {
                         app[key] = response.data[key];
                     }
-                })
+                });
         }
     }
 });

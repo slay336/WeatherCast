@@ -15,6 +15,8 @@ class WeatherRetriever:
 
     def get_weather(self, city: str, metrics: Metrics) -> dict:
         key = os.environ.get('WEATHER_KEY')
+        if not key:
+            raise ValueError("The weather key was not found")
         target_url = f"{self.url}?q={city}&appid={key}&{metrics.value}"
         response = requests.get(target_url).json()
         if response.get('cod', 400) != 200:
