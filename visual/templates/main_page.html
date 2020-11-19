@@ -7,9 +7,17 @@
         <div id="page">
             <div class="container">
                 <div class="citySearch">
-                    <input type="text" @input="sendSearchRequest" v-model="searchText">
-                    <div class="searchOptions" v-if="searchResults.show">
-                        <a class="searchOption" v-for="result in searchResults.results" @click="chooseSearchResult" href="#">{{ result }}</a>
+                    <input type="text"
+                           @input="sendSearchRequest"
+                           @keyup.down="cityButtonSelect"
+                           @keyup.up="cityButtonSelect"
+                           v-model="searchText">
+                    <div class="searchOptions" id="searchOptions" v-if="searchResults.show">
+                        <a class="searchOption" v-for="(result, index) in searchResults.results"
+                           @click="chooseSearchResult"
+                           :id="'option' + index" href="#">
+                            {{ result }}
+                        </a>
                     </div>
                 </div>
                 <div class="currentWeather">

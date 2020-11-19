@@ -68,7 +68,7 @@ var app = new Vue({
                     setTimeout(() => resolve('done'), 500);
                 });
                 promise.then(function(result){
-                    // запрашиваем подходящие города только если по истечение секунды текст поискового запроса не
+                    // запрашиваем подходящие города только если по истечении секунды текст поискового запроса не
                     // изменился
                     if (lastSearchText === app.searchText) {
                         axios
@@ -76,10 +76,10 @@ var app = new Vue({
                             .then(function(response){
                                 app.searchResults.results = response.data.result.slice(0, 5);
                                 app.searchResults.show = true;
+
                             });
                     }
-                },
-                () => console.log("shit"));
+                });
             } else {
                 this.searchResults = {
                     results: [],
@@ -101,6 +101,27 @@ var app = new Vue({
                         app[key] = response.data[key];
                     }
                 });
+        },
+        cityButtonSelect: function(event){
+            function getOptionIndex(element) {
+                return parseInt(element.id.replace(/option/gi, ''))
+            }
+            let optionsAmount = document.getElementById('searchOptions').children.length;
+            if (optionsAmount > 0) {
+                let selectedCities = document.getElementsByClassName('searchOption active');
+                for (let element in selectedCities) {
+                    element.classList.remove('active');
+                }
+                let currentlySelectedCity = selectedCities.length > 0 ? selectedCities[0] : 'option0';
+                let curre
+                let newActiveCityIndex, newActiveCity;
+                if (event.key === 'ArrowUp') {
+                    newActiveCityIndex = getOptionIndex(currentlySelectedCity);
+                    if (newActiveCityIndex >= 1) {
+                        newActiveCityIndex--;
+                    }
+                }
+            }
         }
     }
 });

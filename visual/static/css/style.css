@@ -63,7 +63,7 @@ body {
     text-decoration: none;
 }
 
-.searchOption:hover {
+.searchOption:hover, .searchOption.active {
     background-color: #41547a;
     color: #fff;
 }
