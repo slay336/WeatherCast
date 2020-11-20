@@ -103,24 +103,54 @@ var app = new Vue({
                 });
         },
         cityButtonSelect: function(event){
-            function getOptionIndex(element) {
-                return parseInt(element.id.replace(/option/gi, ''))
-            }
-            let optionsAmount = document.getElementById('searchOptions').children.length;
-            if (optionsAmount > 0) {
-                let selectedCities = document.getElementsByClassName('searchOption active');
-                for (let element in selectedCities) {
-                    element.classList.remove('active');
+            function getOptionIndex(elementId) {
+                if (elementId != undefined)
+                {
+                    return parseInt(elementId.replace(/option/gi, ''));
+                } else
+                {
+                    return undefined;
                 }
-                let currentlySelectedCity = selectedCities.length > 0 ? selectedCities[0] : 'option0';
-                let curre
-                let newActiveCityIndex, newActiveCity;
-                if (event.key === 'ArrowUp') {
-                    newActiveCityIndex = getOptionIndex(currentlySelectedCity);
-                    if (newActiveCityIndex >= 1) {
-                        newActiveCityIndex--;
+
+            }
+            let selectedCities = document.getElementsByClassName('searchOption active');
+            let currentCity = selectedCities.length > 0 ? selectedCities[0].id : undefined;
+            let currentCityIndex = getOptionIndex(currentCity);
+
+            for (let i = 0; i < selectedCities.length; i++)
+            {
+                selectedCities[i].classList.remove('active');
+            }
+            let shownCities = document.getElementById('searchOptions').children;
+            // получим текущий выбранный элемент
+
+            let newCityIndex = undefined;
+            if ((event.key == "ArrowDown" || event.key == "ArrowUp") && shownCities.length > 0)
+            {
+                // нажали стрелочку, и есть предлагаемые варианты
+                if (currentCityIndex != undefined)
+                {
+                    // что-то уже выбрали
+                    if (event.key == "ArrowDown" && shownCities.length - 2 >= currentCityIndex)
+                    {
+                        // переходим на элемент ниже, но не ниже самого нижнего
+                        newCityIndex = currentCityIndex + 1;
+                    }
+                    else if (event.key == "ArrowUp" && currentCityIndex > 0)
+                    {
+                        // переходим на элемент выше, но не выше самого верхнего элемента
+                        newCityIndex = currentCityIndex - 1;
                     }
                 }
+                else
+                {
+                    // если ничего еще не выбрали, то по нажатии на любую стрелку встаем на верхний элемент
+                    newCityIndex = 0;
+                }
+            }
+            if (newCityIndex != undefined)
+            {
+                document.getElementById("option" + newCityIndex).classList.add('active');
             }
         }
     }
