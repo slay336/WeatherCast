@@ -9,12 +9,14 @@
                 <div class="citySearch">
                     <input type="text"
                            @input="sendSearchRequest"
-                           @keyup.down="cityButtonSelect"
-                           @keyup.up="cityButtonSelect"
+                           @keydown.down="cityButtonSelect"
+                           @keydown.up="cityButtonSelect"
+                           @keydown.enter="cityButtonSelect"
                            v-model="searchText">
                     <div class="searchOptions" id="searchOptions" v-if="searchResults.show">
                         <a class="searchOption" v-for="(result, index) in searchResults.results"
                            @click="chooseSearchResult"
+                           @mouseover="deactivateSelectedCity"
                            :id="'option' + index" href="#">
                             {{ result }}
                         </a>

@@ -88,7 +88,11 @@ var app = new Vue({
             }
         },
         chooseSearchResult: function(event) {
-            this.searchText = event.target.innerHTML.trim();
+            this.chooseSearchResultById(event.target.id);
+
+        },
+        chooseSearchResultById: function(id){
+            this.searchText = document.getElementById(id).innerHTML.trim();
             this.searchResults.show = false;
             document.cookie = "currentCity=" + this.searchText;
             this.requestWeather();
@@ -102,6 +106,12 @@ var app = new Vue({
                     }
                 });
         },
+        deactivateSelectedCity: function(){
+            let selectedCities = document.getElementsByClassName('searchOption active');
+            for (let i = 0; i < selectedCities.length; i++){
+                selectedCities[i].classList.remove('active');
+            }
+        },
         cityButtonSelect: function(event){
             function getOptionIndex(elementId) {
                 if (elementId != undefined)
@@ -113,44 +123,53 @@ var app = new Vue({
                 }
 
             }
+            event.preventDefault();
             let selectedCities = document.getElementsByClassName('searchOption active');
+            // получим текущий выбранный элемент
             let currentCity = selectedCities.length > 0 ? selectedCities[0].id : undefined;
             let currentCityIndex = getOptionIndex(currentCity);
 
-            for (let i = 0; i < selectedCities.length; i++)
-            {
-                selectedCities[i].classList.remove('active');
+            let dropdown = document.getElementById('searchOptions')
+            let shownCities;
+            if (dropdown != null){
+                shownCities = dropdown.children;
+            } else {
+                shownCities = [];
             }
-            let shownCities = document.getElementById('searchOptions').children;
-            // получим текущий выбранный элемент
 
             let newCityIndex = undefined;
-            if ((event.key == "ArrowDown" || event.key == "ArrowUp") && shownCities.length > 0)
-            {
-                // нажали стрелочку, и есть предлагаемые варианты
-                if (currentCityIndex != undefined)
+            if (shownCities.length > 0){
+                if ((event.key == "ArrowDown" || event.key == "ArrowUp"))
                 {
-                    // что-то уже выбрали
-                    if (event.key == "ArrowDown" && shownCities.length - 2 >= currentCityIndex)
+                    // нажали стрелочку, и есть предлагаемые варианты
+                    if (currentCityIndex != undefined)
                     {
-                        // переходим на элемент ниже, но не ниже самого нижнего
-                        newCityIndex = currentCityIndex + 1;
+                        // что-то уже выбрали
+                        if (event.key == "ArrowDown" && shownCities.length - 2 >= currentCityIndex)
+                        {
+                            // переходим на элемент ниже, но не ниже самого нижнего
+                            this.deactivateSelectedCity();
+                            newCityIndex = currentCityIndex + 1;
+                        }
+                        else if (event.key == "ArrowUp" && currentCityIndex > 0)
+                        {
+                            // переходим на элемент выше, но не выше самого верхнего элемента
+                            this.deactivateSelectedCity();
+                            newCityIndex = currentCityIndex - 1;
+                        }
                     }
-                    else if (event.key == "ArrowUp" && currentCityIndex > 0)
+                    else
                     {
-                        // переходим на элемент выше, но не выше самого верхнего элемента
-                        newCityIndex = currentCityIndex - 1;
+                        // если ничего еще не выбрали, то по нажатии на любую стрелку встаем на верхний элемент
+                        newCityIndex = 0;
                     }
+
+                    if (newCityIndex != undefined){
+                        document.getElementById("option" + newCityIndex).classList.add('active');
+                    }
+                } else if (event.key = "Enter") {
+                    this.chooseSearchResultById(document.getElementById(currentCity).id);
                 }
-                else
-                {
-                    // если ничего еще не выбрали, то по нажатии на любую стрелку встаем на верхний элемент
-                    newCityIndex = 0;
-                }
-            }
-            if (newCityIndex != undefined)
-            {
-                document.getElementById("option" + newCityIndex).classList.add('active');
             }
         }
     }
