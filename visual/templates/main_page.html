@@ -44,7 +44,8 @@
                             </div>
                         </div>
                         <div class="weatherIcon">
-                            <currentimage :imagename="currentImage"></currentimage>
+                            <currentimage :imagename="currentImage"
+                                          :class="runAnimation ? 'animated' : ''"></currentimage>
                         </div>
                     </div>
                 </div>

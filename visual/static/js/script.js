@@ -57,7 +57,8 @@ var app = new Vue({
             results: [],
             show: false
         },
-        searchText: ""
+        searchText: "",
+        runAnimation: false
     },
     methods: {
         sendSearchRequest: function() {
@@ -98,12 +99,22 @@ var app = new Vue({
             this.requestWeather();
         },
         requestWeather: function() {
+            this.runAnimation = true;
+            let animationStart = new Date;
             axios
                 .get('/get_weather')
                 .then(function(response) {
-                    for (var key in response.data) {
-                        app[key] = response.data[key];
-                    }
+                    let delta = new Date - animationStart;
+                    new Promise(function(resolve, reject){
+                        setTimeout(() => resolve(), 10000 - delta);
+                    })
+                        .then(function(){
+                            for (var key in response.data) {
+                                app[key] = response.data[key];
+                            }
+                            app.runAnimation = false;
+                        });
+
                 });
         },
         deactivateSelectedCity: function(){

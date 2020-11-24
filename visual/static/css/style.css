@@ -109,3 +109,22 @@ body {
 
     text-transform: uppercase;
 }
+
+.animated {
+    position: relative;
+    animation-name: animated-switch;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.2, -0.55, 0.21, 1.55);
+    animation-fill-mode: forwards;
+}
+
+@keyframes animated-switch{
+    0%{
+        left: 0%;
+    }
+    100%{
+        left: 50%;
+        opacity: 0%;
+    }
+
+}
