@@ -79,6 +79,7 @@ body {
 }
 
 .currentWeatherFlex {
+    height: 70%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -118,7 +119,7 @@ body {
     animation-fill-mode: forwards;
 }
 
-.animated.reverse {
+.animated-reverse {
     position: relative;
     left: 50%;
     opacity: 0%;

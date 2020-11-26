@@ -105,18 +105,16 @@ var app = new Vue({
                     app.animationClass = "animated";
                     let mainWeatherIcon = document.getElementById("mainWeatherIcon");
                     mainWeatherIcon.addEventListener("webkitAnimationEnd", function(event){
-                        if (app.animationClass == "animated") {
-                            app.currentImage = response.data.currentImage;
-                            app.animationClass = "animated reverse";
-                        } else if (app.animationClass = "animated reverse") {
+                        if (event.animationName == "animated-switch") {
                             for (var key in response.data) {
-                                if (key != 'currentImage') {
-                                    app[key] = response.data[key];
-                                }
+                                app[key] = response.data[key];
                             }
+                            app.animationClass = "animated-reverse";
+                        } else if (event.animationName == "animated-switch-reverse") {
                             app.animationClass = "";
+                            mainWeatherIcon.removeEventListener("webkitAnimationEnd", null);
                         }
-                        mainWeatherIcon.removeEventListener("webkitAnimationEnd", null);
+
                     });
                 });
         },
