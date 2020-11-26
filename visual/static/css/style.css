@@ -118,13 +118,34 @@ body {
     animation-fill-mode: forwards;
 }
 
+.animated.reverse {
+    position: relative;
+    left: 50%;
+    opacity: 0%;
+    animation-name: animated-switch-reverse;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.2, -0.55, 0.21, 1.55);
+    animation-fill-mode: forwards;
+}
+
 @keyframes animated-switch{
     0%{
         left: 0%;
+        opacity: 100%;
     }
     100%{
         left: 50%;
         opacity: 0%;
     }
+}
 
+@keyframes animated-switch-reverse{
+    0%{
+        left: 50%;
+        opacity: 0%;
+    }
+    100%{
+        left: 0%;
+        opacity: 100%;
+    }
 }

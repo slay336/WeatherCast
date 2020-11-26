@@ -58,7 +58,7 @@ var app = new Vue({
             show: false
         },
         searchText: "",
-        runAnimation: false
+        animationClass: ""
     },
     methods: {
         sendSearchRequest: function() {
@@ -99,22 +99,25 @@ var app = new Vue({
             this.requestWeather();
         },
         requestWeather: function() {
-            this.runAnimation = true;
-            let animationStart = new Date;
             axios
                 .get('/get_weather')
                 .then(function(response) {
-                    let delta = new Date - animationStart;
-                    new Promise(function(resolve, reject){
-                        setTimeout(() => resolve(), 10000 - delta);
-                    })
-                        .then(function(){
+                    app.animationClass = "animated";
+                    let mainWeatherIcon = document.getElementById("mainWeatherIcon");
+                    mainWeatherIcon.addEventListener("webkitAnimationEnd", function(event){
+                        if (app.animationClass == "animated") {
+                            app.currentImage = response.data.currentImage;
+                            app.animationClass = "animated reverse";
+                        } else if (app.animationClass = "animated reverse") {
                             for (var key in response.data) {
-                                app[key] = response.data[key];
+                                if (key != 'currentImage') {
+                                    app[key] = response.data[key];
+                                }
                             }
-                            app.runAnimation = false;
-                        });
-
+                            app.animationClass = "";
+                        }
+                        mainWeatherIcon.removeEventListener("webkitAnimationEnd", null);
+                    });
                 });
         },
         deactivateSelectedCity: function(){
@@ -125,14 +128,11 @@ var app = new Vue({
         },
         cityButtonSelect: function(event){
             function getOptionIndex(elementId) {
-                if (elementId != undefined)
-                {
+                if (elementId != undefined) {
                     return parseInt(elementId.replace(/option/gi, ''));
-                } else
-                {
+                } else {
                     return undefined;
                 }
-
             }
             event.preventDefault();
             let selectedCities = document.getElementsByClassName('searchOption active');
