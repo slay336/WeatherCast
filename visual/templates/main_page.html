@@ -1,38 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}Главная страница{% endblock %}
+{% block title %}Погода{% endblock %}
 
 {% block content %}
-<div class="container"></div>
-    <div class="row justify-content-center">
-        <div class="col-3">
-            <h1 style="text-align: center;">Current weather:</h1>
-        </div>
-    </div>
-    <div class="row justify-content-center dropmenu1">
-        <div class="col-1">
-            <button class="btn btn-secondary dropdown-toggle align-self-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose city</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {% for city in city_list %}
-                    <div class="dropdown-item" onclick="getWe('{{ city }}')" id="{{ city }}">{{ city }}</div>
-                {% endfor %}
+    {% raw %}
+        <div id="page">
+            <div class="container">
+                <div class="citySearch">
+                    <input type="text"
+                           @input="sendSearchRequest"
+                           @keydown.down="cityButtonSelect"
+                           @keydown.up="cityButtonSelect"
+                           @keydown.enter="cityButtonSelect"
+                           v-model="searchText">
+                    <div class="searchOptions" id="searchOptions" v-if="searchResults.show">
+                        <a class="searchOption" v-for="(result, index) in searchResults.results"
+                           @click="chooseSearchResult"
+                           @mouseover="deactivateSelectedCity"
+                           :id="'option' + index" href="#">
+                            {{ result }}
+                        </a>
+                    </div>
+                </div>
+                <div class="currentWeather">
+                    <div class="currentWeatherFlex">
+                        <div class="weatherText">
+                            <div class="currentDate">
+                                {{ currentDate }}
+                            </div>
+                            <div class="weatherData">
+                                <div class="currentTemperature">
+                                    {{ currentTemperature }}
+                                </div>
+                                <div class="currentTime">
+                                    {{ currentTime }}
+                                </div>
+                                <div class="realFeel">
+                                    {{ realFeel }}
+                                </div>
+                                <div class="humidity">
+                                    {{ humidity }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="weatherIcon">
+                            <currentimage id="mainWeatherIcon"
+                                          :imagename="currentImage"
+                                          :class="animationClass"></currentimage>
+                        </div>
+                    </div>
+                </div>
+                <div class="weatherForecast">
+                    <div class="forecastItem" v-for="forecast in forecasts">
+                        <div class="forecastText">
+                            {{ forecast.dayOfWeek }}<br>{{ forecast.temperature }}
+                        </div>
+                        <div class="forecastImage">
+                            <currentimage :imagename="forecast.icon"></currentimage>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-        <!-- Вывод погоды таблицей
-          <table class="table" style="border: 1px solid gray; text-align: center;">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Город</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for city in city_list %}
-                    <tr><td><a href="/get_weather?city={{ city }}">{{ city }}</a></td></tr>
-                {% endfor %}
-                </tbody>
-            </table> -->
-
         </div>
-    </div>
-</div>
+    {% endraw %}
 {% endblock %}

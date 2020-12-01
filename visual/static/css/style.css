@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Cousine&display=swap');
+
+
+/*font-family: 'Cousine', monospace;*/
+
+body {
+    height: 100vh;
+    background: linear-gradient(to top right, #597078 , #aec3d0) no-repeat;
+    margin: 0;
+    padding: 30px 50px;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Cousine', monospace;
+    color: #fff;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.citySearch {
+    padding: 20px;
+    position: relative;
+    margin: 0;
+}
+
+.citySearch input[type='text'] {
+    width: 100%;
+    text-align: center;
+    border-radius: 4px;
+    border: 0;
+    color: #275763;
+    outline: none;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.searchOptions {
+    position: absolute;
+    display: block;
+    left: 20px;
+    right: 20px;
+    border-collapse: collapse;
+    border-radius: 4px;
+    border-top: 1px solid black;
+
+    text-align: center;
+}
+
+.searchOption {
+    border: 1px solid black;
+    border-top: 0;
+    display: block;
+    width: 100%;
+    background-color: white;
+    font-size: 24px;
+    color: #275763;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.searchOption:hover, .searchOption.active {
+    background-color: #41547a;
+    color: #fff;
+}
+
+.currentWeather {
+    height: 340px;
+    width: 100%;
+    display: block;
+    padding: 75px 20% 0;
+
+    background-color: #275763;
+    font-size: 26px;
+}
+
+.currentWeatherFlex {
+    height: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.currentDate {
+    text-transform: uppercase;
+
+    margin-bottom: 32px;
+}
+
+.weatherForecast {
+    border: 1px solid #89abb4;
+    border-collapse: collapse;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.forecastItem {
+    height: 101px;
+    width: 33.33333%;
+    border: 1px solid #89abb4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+
+    text-transform: uppercase;
+}
+
+.animated {
+    position: relative;
+    animation-name: animated-switch;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.2, -0.55, 0.21, 1.55);
+    animation-fill-mode: forwards;
+}
+
+.animated-reverse {
+    position: relative;
+    left: 50%;
+    opacity: 0%;
+    animation-name: animated-switch-reverse;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.2, -0.55, 0.21, 1.55);
+    animation-fill-mode: forwards;
+}
+
+@keyframes animated-switch{
+    0%{
+        left: 0%;
+        opacity: 100%;
+    }
+    100%{
+        left: 50%;
+        opacity: 0%;
+    }
+}
+
+@keyframes animated-switch-reverse{
+    0%{
+        left: 50%;
+        opacity: 0%;
+    }
+    100%{
+        left: 0%;
+        opacity: 100%;
+    }
+}
