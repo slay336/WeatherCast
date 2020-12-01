@@ -1,12 +1,9 @@
 from flask import Flask, render_template, request
-from json_parser import WeatherRetriever as wr, Metrics
+from json_parser import WeatherRetriever as wr, Metrics, available_cities
 import json
 import datetime
 
 app = Flask(__name__)
-
-with open("city_names.json", "r") as f:
-    available_cities = json.loads(f.read())
 
 
 @app.route('/')
@@ -20,7 +17,7 @@ def get_city_weather():
     wr_obj = wr()
     requested_city = request.cookies.get("currentCity", "")
     if requested_city:
-        result = wr_obj.get_weather(requested_city, Metrics.METRIC)
+        result = wr_obj.get_weather(requested_city)
     else:
         result = {
             "error": "Incorrect city"
@@ -31,7 +28,7 @@ def get_city_weather():
 @app.route('/search_city')
 def search_city():
     results = []
-    for city in available_cities:
+    for city in available_cities.keys():
         if request.args.get('query').lower() in city.lower():
             results.append(city)
             if len(results) == 5:

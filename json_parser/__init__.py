@@ -2,6 +2,10 @@ import requests
 import os
 from enum import Enum
 import datetime as dt
+import json
+
+with open("city_names.json", "r") as f:
+    available_cities = json.loads(f.read())
 
 
 class Metrics(Enum):
@@ -9,49 +13,46 @@ class Metrics(Enum):
     IMPERIAL = "units=imperial"
 
 
-class RequestType(Enum):
-    WEATHER = "weather"
-    DAILY = 'forecast/daily'
-
-
 class WeatherRetriever:
     def __init__(self, url: str = "http://api.openweathermap.org/data/2.5/"):
         self.url = url
-
-    def ask_weather_data(self, city: str, request_type: RequestType = RequestType.WEATHER,
-                         metrics: Metrics = Metrics.METRIC):
-        key = os.environ.get('WEATHER_KEY')
-        if not key:
+        self.key = os.environ.get('WEATHER_KEY')
+        if not self.key:
             raise ValueError("The weather key was not found")
-        target_url = f"{self.url}{request_type.value}?q={city}"
-        # Todo: сделать парсинг координат из файла-источника с городами и переписать daily/forecast на onecall
-        if request_type.value == RequestType.WEATHER.value:
-            target_url += f"&{metrics.value}"
-        elif request_type.value == RequestType.DAILY.value:
-            target_url += f"&cnt=6"
-        target_url += f"&appid={key}"
+
+    def ask_weather_data(self, city: str):
+        city_data = available_cities[city]
+        target_url = f"{self.url}onecall?lat={city_data['lat']}&lon={city_data['lon']}" \
+                     f"&exclude=minutely,hourly,alerts&{Metrics.METRIC.value}&appid={self.key}"
         response = requests.get(target_url).json()
-        if response.get('cod', 400) != 200:
-            raise ValueError("The requested data was not received")
         return response
 
-    def get_weather(self, city: str, metrics: Metrics = Metrics.METRIC) -> dict:
+    @staticmethod
+    def set_icon_to_day(icon: str):
+        return icon.replace('n', 'd')
 
-        response = self.ask_weather_data(city, RequestType.WEATHER)
-        current_date_utc = dt.datetime.utcnow()
-        current_date = current_date_utc + dt.timedelta(seconds=response["timezone"])
+    def get_weather(self, city: str) -> dict:
 
-        icon = response["weather"][0]["icon"].replace('n', 'd')
+        response = self.ask_weather_data(city)
+        # current_date_utc = dt.datetime.utcnow()
+        current_date = dt.datetime.utcnow() + dt.timedelta(seconds=response["timezone_offset"])
+        current_weather = response["current"]
 
         result = {
             "currentDate": dt.datetime.strftime(current_date, "%A, %b %d"),
             "currentTime": dt.datetime.strftime(current_date, "%H:%M"),
-            "currentTemperature": f'{int(round(response["main"]["temp"], 0))}\xb0C',
-            "realFeel": f'Real Feel {int(round(response["main"]["feels_like"]))}\xb0C',
-            "humidity": f'Humidity {response["main"]["humidity"]}%',
-            "currentImage": icon
+            "currentTemperature": f'{int(round(current_weather["temp"], 0))}\xb0C',
+            "realFeel": f'Real Feel {int(round(current_weather["feels_like"]))}\xb0C',
+            "humidity": f'Humidity {current_weather["humidity"]}%',
+            "currentImage": self.set_icon_to_day(current_weather["weather"][0]["icon"]),
+            "forecasts": []
         }
 
-        forecast = self.ask_weather_data(city, RequestType.DAILY)
-        print(forecast)
+        forecasts = response["daily"][1:7]
+        for forecast in forecasts:
+            result["forecasts"].append({
+                "dayOfWeek": dt.datetime.strftime(dt.datetime.fromtimestamp(forecast["dt"]), '%a'),
+                "temperature": f"{int(round(forecast['temp']['day'], 0))}\xb0C",
+                "icon": self.set_icon_to_day(forecast["weather"][0]["icon"])
+            })
         return result

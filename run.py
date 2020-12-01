@@ -7,4 +7,4 @@ except locale.Error:
     locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 
 if __name__ == '__main__':
-    app.run(port=8080)
+    app.run(host="0.0.0.0", port=5000)
