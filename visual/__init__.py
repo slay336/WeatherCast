@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
-from json_parser import WeatherRetriever as wr, Metrics, available_cities
+from json_parser import WeatherRetriever as wr, available_cities
 import json
-import datetime
 
 app = Flask(__name__)
 
@@ -37,5 +36,4 @@ def search_city():
         "result": results
     }
     return json.dumps(result)
-
 
