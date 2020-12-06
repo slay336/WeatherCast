@@ -58,35 +58,34 @@ var app = new Vue({
             show: false
         },
         searchText: "",
-        animationClass: ""
+        animationClass: "",
+        citySearchTimeout: null
     },
     methods: {
         sendSearchRequest: function() {
-            if (this.searchText != "") {
-                let lastSearchText = this.searchText;
-                let promise = new Promise(function(resolve, reject){
-                    // ждем полсекунды, потом запрашиваем подходящие города
-                    setTimeout(() => resolve('done'), 500);
-                });
-                promise.then(function(result){
-                    // запрашиваем подходящие города только если по истечении секунды текст поискового запроса не
-                    // изменился
-                    if (lastSearchText === app.searchText) {
-                        axios
-                            .get('/search_city?query=' + app.searchText)
-                            .then(function(response){
-                                app.searchResults.results = response.data.result.slice(0, 5);
-                                app.searchResults.show = true;
-
-                            });
+            let promise = new Promise(function(resolve, reject){
+                // ждем полсекунды, потом запрашиваем подходящие города
+                clearTimeout(app.citySearchTimeout);
+                app.citySearchTimeout = setTimeout(() => resolve('done'), 500);
+            });
+            promise.then(function(result){
+                // запрашиваем подходящие города только если по истечении секунды текст поискового запроса не
+                // изменился
+                if (app.searchText != "") {
+                    axios
+                        .get('/search_city?query=' + app.searchText)
+                        .then(function(response){
+                            app.searchResults.results = response.data.result.slice(0, 5);
+                            app.searchResults.show = true;
+                        });
+                } else {
+                    clearTimeout(this.citySearchTimeout);
+                    app.searchResults = {
+                        results: [],
+                        show: false
                     }
-                });
-            } else {
-                this.searchResults = {
-                    results: [],
-                    show: false
                 }
-            }
+            });
         },
         chooseSearchResult: function(event) {
             this.chooseSearchResultById(event.target.id);
@@ -99,22 +98,37 @@ var app = new Vue({
             this.requestWeather();
         },
         requestWeather: function() {
+            let mainWeatherIcon = document.getElementById("mainWeatherIcon");
+            // для начала будем останавливать анимацию после завершения первого прогона
+            mainWeatherIcon.addEventListener("animationiteration", function(event){
+                mainWeatherIcon.style.animationPlayState = "paused";
+                mainWeatherIcon.removeEventListener("animationiteration", null);
+            });
+            // включим анимацию сразу после выбора города
+            this.animationClass = "animated";
+            // запрашиваем погоду. анимация должна будет ждать получения результата
             axios
                 .get('/get_weather')
                 .then(function(response) {
-                    app.animationClass = "animated";
-                    let mainWeatherIcon = document.getElementById("mainWeatherIcon");
-                    mainWeatherIcon.addEventListener("webkitAnimationEnd", function(event){
-                        if (event.animationName == "animated-switch") {
-                            for (var key in response.data) {
-                                app[key] = response.data[key];
+                    // данные получены. каждые полсекунды проверяем, завершилась ли анимация
+                    new Promise(function(resolve, reject){
+                        setInterval(function(){
+                            if (mainWeatherIcon.style.animationPlayState == "paused") {
+                                resolve();
                             }
-                            app.animationClass = "animated-reverse";
-                        } else if (event.animationName == "animated-switch-reverse") {
-                            app.animationClass = "";
-                            mainWeatherIcon.removeEventListener("webkitAnimationEnd", null);
+                        }, 500);
+                    }).then(function(){
+                        // анимация завершилась, данные получены. отображаем данные в нужных элементах
+                        for (var key in response.data) {
+                            app[key] = response.data[key];
                         }
-
+                        // продолжаем анимацию
+                        mainWeatherIcon.style.animationPlayState = "running";
+                        // при завершении анимации, откатываемся к дефолтному состоянию
+                        mainWeatherIcon.addEventListener("animationend", function(event){
+                            app.animationClass = "";
+                            mainWeatherIcon.removeEventListener("animationend", null);
+                        });
                     });
                 });
         },
@@ -148,27 +162,22 @@ var app = new Vue({
 
             let newCityIndex = undefined;
             if (shownCities.length > 0){
-                if ((event.key == "ArrowDown" || event.key == "ArrowUp"))
-                {
+                if ((event.key == "ArrowDown" || event.key == "ArrowUp")) {
                     // нажали стрелочку, и есть предлагаемые варианты
-                    if (currentCityIndex != undefined)
-                    {
+                    if (currentCityIndex != undefined) {
                         // что-то уже выбрали
-                        if (event.key == "ArrowDown" && shownCities.length - 2 >= currentCityIndex)
-                        {
+                        if (event.key == "ArrowDown" && shownCities.length - 2 >= currentCityIndex) {
                             // переходим на элемент ниже, но не ниже самого нижнего
                             this.deactivateSelectedCity();
                             newCityIndex = currentCityIndex + 1;
                         }
-                        else if (event.key == "ArrowUp" && currentCityIndex > 0)
-                        {
+                        else if (event.key == "ArrowUp" && currentCityIndex > 0) {
                             // переходим на элемент выше, но не выше самого верхнего элемента
                             this.deactivateSelectedCity();
                             newCityIndex = currentCityIndex - 1;
                         }
                     }
-                    else
-                    {
+                    else {
                         // если ничего еще не выбрали, то по нажатии на любую стрелку встаем на верхний элемент
                         newCityIndex = 0;
                     }
