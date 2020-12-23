@@ -8,7 +8,7 @@ with open("city_names.json", "r") as f:
     available_cities = json.loads(f.read())
 
 
-class Metrics(Enum):
+class Units(Enum):
     METRIC = "units=metric"
     IMPERIAL = "units=imperial"
 
@@ -23,7 +23,7 @@ class WeatherRetriever:
     def ask_weather_data(self, city: str):
         city_data = available_cities[city]
         target_url = f"{self.url}onecall?lat={city_data['lat']}&lon={city_data['lon']}" \
-                     f"&exclude=minutely,hourly,alerts&{Metrics.METRIC.value}&appid={self.key}"
+                     f"&exclude=minutely,hourly,alerts&{Units.METRIC.value}&appid={self.key}"
         response = requests.get(target_url).json()
         return response
 

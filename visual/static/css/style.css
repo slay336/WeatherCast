@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cousine&display=swap');
 
-
-/*font-family: 'Cousine', monospace;*/
-
 body {
     height: 100vh;
     background: linear-gradient(to top right, #597078 , #aec3d0) no-repeat;
@@ -72,17 +69,19 @@ body {
     height: 340px;
     width: 100%;
     display: block;
-    padding: 75px 20% 0;
+    padding: 75px 20%;;
 
     background-color: #275763;
     font-size: 26px;
 }
 
 .currentWeatherFlex {
-    height: 70%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+}
+
+#mainWeatherIcon {
+    padding-top: 50%;
 }
 
 .currentDate {
@@ -130,4 +129,82 @@ body {
         left: 50%;
         opacity: 0%;
     }
+}
+
+@media screen and (max-width: 1200px) {
+    .forecastText {
+        margin-left: -20px;
+    }
+    .forecastImage {
+        margin-right: -20px;
+    }
+}
+
+@media screen and (max-width: 840px) {
+    body {
+        height: 100%;
+        padding: 0;
+    }
+    
+    .container {
+        width: 100%;
+    }
+
+    .currentWeather {
+        padding: 75px 15%;
+        font-size: 20px;
+    }
+
+    .forecastItem {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 768px) and (min-height: 800px) {
+    body {
+        height: 100vh;
+    }
+}
+
+@media screen and (max-width: 610px) {
+    
+    
+    .currentWeather {
+        height: 250px;
+        padding: 30px 15%;
+        font-size: 18px;
+    }
+
+    .currentWeatherFlex {
+        display: block;
+        height: 178px;
+        text-align: center;
+    }
+
+    .currentDate {
+        margin-bottom: 0;
+    }
+
+    #mainWeatherIcon {
+        padding-top: 0;
+        margin-top: 15px;
+    }
+
+    .weatherText {
+        width: 100%;
+        min-height: 100px;
+    }
+
+    .forecastItem {
+        width: 100%;
+        padding: 0 20%;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    
+    
+    .currentWeather {
+        height: 280px;
+    }    
 }
