@@ -3,7 +3,7 @@ from json_parser import WeatherRetriever as wr, available_cities
 import json
 
 app = Flask(__name__)
-
+wr_obj = wr()
 
 @app.route('/')
 @app.route('/index')
@@ -13,7 +13,6 @@ def index():
 
 @app.route('/get_weather')
 def get_city_weather():
-    wr_obj = wr()
     requested_city = request.cookies.get("currentCity", "")
     if requested_city:
         result = wr_obj.get_weather(requested_city)
