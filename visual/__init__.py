@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
-from json_parser import WeatherRetriever as wr, available_cities
+from json_parser import WeatherRetriever as wr
+from db import Session, City
 import json
 
 app = Flask(__name__)
@@ -26,11 +27,9 @@ def get_city_weather():
 @app.route('/search_city')
 def search_city():
     results = []
-    for city in available_cities.keys():
-        if request.args.get('query').lower() in city.lower():
-            results.append(city)
-            if len(results) == 5:
-                break
+    session = Session()
+    for city in session.query(City.name).filter(City.name.ilike(f"%{request.args.get('query')}%")).limit(5):
+        results.append(city[0])
     result = {
         "result": results
     }

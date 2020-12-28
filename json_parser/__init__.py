@@ -3,9 +3,7 @@ import os
 from enum import Enum
 import datetime as dt
 import json
-
-with open("city_names.json", "r") as f:
-    available_cities = json.loads(f.read())
+from db import get_city_coord
 
 
 class Units(Enum):
@@ -21,8 +19,8 @@ class WeatherRetriever:
             raise ValueError("The weather key was not found")
 
     def ask_weather_data(self, city: str):
-        city_data = available_cities[city]
-        target_url = f"{self.url}onecall?lat={city_data['lat']}&lon={city_data['lon']}" \
+        city_data = get_city_coord(city)
+        target_url = f"{self.url}onecall?lat={city_data[0]}&lon={city_data[1]}" \
                      f"&exclude=minutely,hourly,alerts&{Units.METRIC.value}&appid={self.key}"
         response = requests.get(target_url).json()
         return response
@@ -34,7 +32,6 @@ class WeatherRetriever:
     def get_weather(self, city: str) -> dict:
 
         response = self.ask_weather_data(city)
-        # current_date_utc = dt.datetime.utcnow()
         current_date = dt.datetime.utcnow() + dt.timedelta(seconds=response["timezone_offset"])
         current_weather = response["current"]
 
