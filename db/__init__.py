@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
 engine = create_engine('sqlite:///./db/cities.db', echo=False)
 Base = declarative_base()
@@ -19,8 +20,13 @@ class City(Base):
         return f"<City {self.name} lon:{self.longitude} lat:{self.latitude}>"
 
 
+if not os.path.exists("./db/cities.db"):
+    Base.metadata.create_all(engine)
+    from parse_city_names import fill_db
+    print("Initializing the database...")
+    fill_db()
+    print("The database is initialized!")
 
-Base.metadata.create_all(engine)
 
 def add_city(name: str, lon: float, lat: float):
     """
