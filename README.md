@@ -5,8 +5,8 @@
 
 ### Требования
 1. Установленный Git (`sudo apt install git`)
-2. Установленный [Docker] (https://docs.docker.com/engine/install/ubuntu/)
-3. Установленный [Docker-compose] (https://docs.docker.com/compose/install/)
+2. Установленный [Docker](https://docs.docker.com/engine/install/ubuntu/)
+3. Установленный [Docker-compose](https://docs.docker.com/compose/install/)
 
 ### Установка
 1. `git clone git@github.com:slay336/WeatherCast.git`
